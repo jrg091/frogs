@@ -5,19 +5,51 @@ import 'package:frogs/src/blocs/LoginBloc.dart';
 
 const Color MAIN_COLOR = Color.fromRGBO(74, 220, 113, 1); // #4adc71
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
 
-  static const ROUTE = "/login";
+  static const ROUTE = "/";
+
+  @override
+  State<StatefulWidget> createState() => LoginState();
+}
+
+class LoginState extends State<Login> {
+
+  bool _loggedIn;
 
   @override
   Widget build(BuildContext context) {
+    Widget childWidget;
+    if (_loggedIn == null || _loggedIn) {
+      childWidget = getProgressIndicator();
+    } else {
+      childWidget = LoginForm();
+    }
+
     return Scaffold(
         body: Container(
             alignment: Alignment.center,
-            child: LoginForm()
+            child: childWidget
         )
     );
   }
+
+  Widget getProgressIndicator() {
+    return CircularProgressIndicator();
+  }
+
+  @override
+  void initState() {
+    LoginBLoc().userLoggedIn()
+        .then((userName) {
+            setState(() => _loggedIn = userName != null && userName != "");
+            if (userName != null && userName != "") {
+              Navigator.pushNamed(context, Whiteboard.ROUTE);
+            }
+          }
+        );
+  }
+
 }
 
 class LoginForm extends StatefulWidget {
@@ -65,6 +97,7 @@ class LoginFormState extends State<LoginForm> {
                     return 'Nombre requerido para continuar.';
                   }
                 },
+                controller: _usernameTextController,
                 cursorColor: Colors.black,
                 decoration: InputDecoration(
                     border: textFieldInputBorder,
@@ -82,9 +115,9 @@ class LoginFormState extends State<LoginForm> {
                   textColor: Colors.white,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
                   color: MAIN_COLOR,
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState.validate()) {
-                      LoginBLoc().loginFinished(_usernameTextController.text);
+                      await LoginBLoc().loginFinished(_usernameTextController.text);
                       Navigator.pushNamed(context, Whiteboard.ROUTE);
                     }
                   },

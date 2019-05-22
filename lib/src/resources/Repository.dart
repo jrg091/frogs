@@ -5,12 +5,12 @@ class Repository {
 
   static const String USERNAME_KEY = "username";
 
-  static void saveName(String user) async {
+  static Future<void> saveName(String user) async {
     var sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString(USERNAME_KEY, user);
+    await sharedPreferences.setString(USERNAME_KEY, user);
   }
 
-  static Future<String> getName() async{
+  static Future<String> getName() async {
     var sharedPreferences = await SharedPreferences.getInstance();
     return sharedPreferences.getString(USERNAME_KEY);
   }

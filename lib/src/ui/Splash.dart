@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:frogs/src/ui/Whiteboard.dart';
-import 'package:frogs/src/blocs/LoginBloc.dart';
-
 const Color MAIN_COLOR = Color.fromRGBO(74, 220, 113, 1); // #4adc71
 
 class Splash extends StatelessWidget {
@@ -14,7 +11,7 @@ class Splash extends StatelessWidget {
     return Scaffold(
         body: Container(
             alignment: Alignment.center,
-            child: Image.asset("assets/splash/enzo.png")
+            child: Image.asset("")
         )
     );
   }

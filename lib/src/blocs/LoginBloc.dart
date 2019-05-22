@@ -1,12 +1,14 @@
 
+import 'dart:async';
+
 import 'package:frogs/src/resources/Repository.dart';
 
 class LoginBLoc {
-  void loginFinished(String username) {
-    Repository.saveName(username);
+  Future<void> loginFinished(String username) async {
+    await Repository.saveName(username);
   }
 
   Future<String> userLoggedIn() async {
-    await Repository.getName();
+    return await Repository.getName();
   }
 }
